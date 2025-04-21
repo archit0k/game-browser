@@ -12,6 +12,18 @@ export async function fetchGameDetails(id) {
   return await res.json();
 }
 
+export async function fetchGameTrailers(id) {
+  const res = await fetch(`${BASE_URL}/games/${id}/movies?key=${API_KEY}`);
+  const data = await res.json();
+  return data.results;
+}
+
+export async function fetchSimilarGames(id) {
+  const res = await fetch(`${BASE_URL}/games/${id}/suggested?key=${API_KEY}`);
+  const data = await res.json();
+  return data.results;
+}
+
 export async function fetchGames({
   page = 1,
   search = "",
