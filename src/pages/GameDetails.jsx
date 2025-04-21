@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchGameDetails, fetchGameTrailers, fetchSimilarGames } from '../services/api';
-import GameCard from '../components/GameCard';
-import '../styles/GameDetails.css';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import {
+  fetchGameDetails,
+  fetchGameTrailers,
+  fetchSimilarGames,
+} from "../services/api";
+import GameCard from "../components/GameCard";
+import "../styles/GameDetails.css";
 
 export default function GameDetails() {
   const { id } = useParams();
@@ -10,14 +14,14 @@ export default function GameDetails() {
   const [trailers, setTrailers] = useState([]);
   const [similarGames, setSimilarGames] = useState([]);
   const [userRating, setUserRating] = useState(0);
-  const [userNotes, setUserNotes] = useState('');
+  const [userNotes, setUserNotes] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState({
     wantToPlay: false,
     started: false,
     finished: false,
-    completed: false
+    completed: false,
   });
 
   useEffect(() => {
@@ -26,14 +30,14 @@ export default function GameDetails() {
       setError(null);
       try {
         const gameData = await fetchGameDetails(id);
-        if (!gameData) throw new Error('Failed to fetch game details');
+        if (!gameData) throw new Error("Failed to fetch game details");
         setGame(gameData);
 
         try {
           const trailersData = await fetchGameTrailers(id);
           setTrailers(trailersData || []);
         } catch (e) {
-          console.warn('Failed to load trailers:', e);
+          console.warn("Failed to load trailers:", e);
           setTrailers([]);
         }
 
@@ -41,23 +45,27 @@ export default function GameDetails() {
           const similarGamesData = await fetchSimilarGames(id);
           setSimilarGames(similarGamesData || []);
         } catch (e) {
-          console.warn('Failed to load similar games:', e);
+          console.warn("Failed to load similar games:", e);
           setSimilarGames([]);
         }
 
         // Load user data from localStorage
-        const savedData = JSON.parse(localStorage.getItem(`game_${id}`) || '{}');
+        const savedData = JSON.parse(
+          localStorage.getItem(`game_${id}`) || "{}"
+        );
         setUserRating(savedData.rating || 0);
-        setUserNotes(savedData.notes || '');
-        setProgress(savedData.progress || {
-          wantToPlay: false,
-          started: false,
-          finished: false,
-          completed: false
-        });
+        setUserNotes(savedData.notes || "");
+        setProgress(
+          savedData.progress || {
+            wantToPlay: false,
+            started: false,
+            finished: false,
+            completed: false,
+          }
+        );
       } catch (err) {
         setError(err.message);
-        console.error('Error loading game data:', err);
+        console.error("Error loading game data:", err);
       } finally {
         setLoading(false);
       }
@@ -70,60 +78,73 @@ export default function GameDetails() {
     const userData = {
       rating: userRating,
       notes: userNotes,
-      progress
+      progress,
     };
     localStorage.setItem(`game_${id}`, JSON.stringify(userData));
   };
 
   const getTrailerUrl = (trailer) => {
-    if (!trailer || !trailer.data) return '';
-    
-    const url = trailer.data.max || trailer.data['480'];
-    if (!url) return '';
-    
+    if (!trailer || !trailer.data) return "";
+
+    const url = trailer.data.max || trailer.data["480"];
+    if (!url) return "";
+
     // Check if it's a YouTube URL
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
       // Convert to embed URL if needed
-      const videoId = url.includes('youtu.be') 
-        ? url.split('/').pop()
-        : url.split('v=')[1];
+      const videoId = url.includes("youtu.be")
+        ? url.split("/").pop()
+        : url.split("v=")[1];
       return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
     }
-    
+
     // For other video platforms, add autoplay parameter
-    return url.includes('?') ? `${url}&autoplay=1&mute=1` : `${url}?autoplay=1&mute=1`;
+    return url.includes("?")
+      ? `${url}&autoplay=1&mute=1`
+      : `${url}?autoplay=1&mute=1`;
   };
 
-  if (loading) return (
-    <div className="loading-container">
-      <div className="loading-spinner"></div>
-      <p>Loading game details...</p>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading game details...</p>
+      </div>
+    );
 
-  if (error) return (
-    <div className="error-container">
-      <h2>Error Loading Game</h2>
-      <p>{error}</p>
-      <button onClick={() => window.location.reload()}>Try Again</button>
-    </div>
-  );
+  if (error)
+    return (
+      <div className="error-container">
+        <h2>Error Loading Game</h2>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Try Again</button>
+      </div>
+    );
 
-  if (!game) return (
-    <div className="error-container">
-      <h2>Game Not Found</h2>
-      <p>Sorry, we couldn't find the game you're looking for.</p>
-    </div>
-  );
+  if (!game)
+    return (
+      <div className="error-container">
+        <h2>Game Not Found</h2>
+        <p>Sorry, we couldn't find the game you're looking for.</p>
+      </div>
+    );
 
   return (
     <div className="game-details">
-      <div className="hero-banner" style={{ backgroundImage: `url(${game.background_image || ''})` }}>
+      <div
+        className="hero-banner"
+        style={{ backgroundImage: `url(${game.background_image || ""})` }}
+      >
         <div className="hero-content">
           <h1>{game.name}</h1>
           <div className="meta-info">
-            <span>⭐ {game.rating ? `${game.rating}/5` : 'No rating'}</span>
-            <span>🗓️ {game.released ? new Date(game.released).toLocaleDateString() : 'Release date unknown'}</span>
+            <span>⭐ {game.rating ? `${game.rating}/5` : "No rating"}</span>
+            <span>
+              🗓️{" "}
+              {game.released
+                ? new Date(game.released).toLocaleDateString()
+                : "Release date unknown"}
+            </span>
           </div>
         </div>
       </div>
@@ -146,7 +167,7 @@ export default function GameDetails() {
 
         <section className="description-section">
           <h2>📝 About</h2>
-          <p>{game.description_raw || 'No description available.'}</p>
+          <p>{game.description_raw || "No description available."}</p>
         </section>
 
         <section className="user-interaction">
@@ -160,7 +181,7 @@ export default function GameDetails() {
                     setUserRating(star);
                     saveUserData();
                   }}
-                  className={star <= userRating ? 'active' : ''}
+                  className={star <= userRating ? "active" : ""}
                 >
                   ⭐
                 </button>
@@ -190,7 +211,9 @@ export default function GameDetails() {
                     saveUserData();
                   }}
                 />
-                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                {key
+                  .replace(/([A-Z])/g, " $1")
+                  .replace(/^./, (str) => str.toUpperCase())}
               </label>
             ))}
           </div>
@@ -200,7 +223,7 @@ export default function GameDetails() {
           <h2>🧩 Similar Games</h2>
           {similarGames.length > 0 && (
             <div className="similar-games-grid">
-              {similarGames.slice(0, 4).map(game => (
+              {similarGames.slice(0, 4).map((game) => (
                 <GameCard key={game.id} game={game} />
               ))}
             </div>

@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Browse from './pages/Browse';
-import Wishlist from './pages/Wishlist';
-import Navbar from './components/Navbar';
-import Recommendations from './pages/Recommendations';
-import GameDetails from './pages/GameDetails';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Browse from "./pages/Browse";
+import Wishlist from "./pages/Wishlist";
+import Navbar from "./components/Navbar";
+import Recommendations from "./pages/Recommendations";
+import GameDetails from "./pages/GameDetails";
 
 function App() {
   return (
