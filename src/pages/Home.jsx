@@ -63,7 +63,7 @@ export default function Home() {
               key={game.id}
               className="banner-slide"
               style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${game.background_image})`,
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://cdn2.steamgriddb.com/hero_thumb/335f48075837d5d8f092ca29267f4ab6.jpg)`,
                 width: "100%",
                 backgroundPosition: "center center",
                 backgroundRepeat: "no-repeat",
