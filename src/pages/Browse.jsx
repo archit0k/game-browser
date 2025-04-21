@@ -97,7 +97,51 @@ export default function Browse() {
       </div>
 
       {loading ? (
-        <div className="text-center py-8">Loading...</div>
+        <div className="space-y-6">
+          {/* Skeleton for filters */}
+          {/* <div className="filters-section opacity-50">
+            <div className="h-10 bg-gray-800 rounded-lg animate-pulse" />
+            <div className="filters-row mt-4">
+              <div className="h-10 w-48 bg-gray-800 rounded-lg animate-pulse" />
+              <div className="h-10 w-48 bg-gray-800 rounded-lg animate-pulse" />
+            </div>
+          </div> */}
+
+          {/* Skeleton for game cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+            {[...Array(12)].map((_, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 animate-fadeIn"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative">
+                  <div className="h-48 bg-gradient-to-r from-gray-700 to-gray-800 animate-pulse" />
+                  <div className="absolute top-2 right-2">
+                    <div className="h-6 w-12 bg-gray-700 rounded-full animate-pulse" />
+                  </div>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div className="h-5 bg-gray-700 rounded w-3/4 animate-pulse" />
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-700/60 rounded w-1/2 animate-pulse" />
+                    <div className="h-4 bg-gray-700/40 rounded w-2/3 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Skeleton for pagination */}
+          <div className="flex justify-center space-x-4 p-4">
+            {[...Array(3)].map((_, index) => (
+              <div
+                key={index}
+                className="h-10 w-24 bg-gray-800 rounded-lg animate-pulse"
+              />
+            ))}
+          </div>
+        </div>
       ) : games.length === 0 ? (
         <div className="text-center py-8">No games found</div>
       ) : (
